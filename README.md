@@ -1,4 +1,2 @@
-# Amigo-secreto-JS
-Pagina web que faz sorteio de nomes para amigo secreto <br>
-<br> --- <br>
+# Comunicação com o banco de dados
 
