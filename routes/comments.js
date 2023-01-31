@@ -7,12 +7,12 @@ router.get("/", (req, res, next) => {
     if (error) {
       return res.status(500).send({ error: error });
     }
-    conn.query("SELECT * FROM Botdesigner;", (error, resultado, field) => {
+    conn.query("SELECT * FROM comments;", (error, resultado, field) => {
       if (error) {
         return res.status(500).send({ error: error });
       }
      
-      return res.status(200).send({ listaDeUsuarios: resultado });
+      return res.status(200).send({ message: resultado });
     });
   });
 });
@@ -23,25 +23,18 @@ router.post("/", (req, res, next) => {
       return res.status(500).send({ error: error });
     }
     conn.query(
-      "INSERT INTO Botdesigner (name, lastName, email, cpf, color, genre, birthDay, maritalStatus, phone, phone2) VALUES (?,?,?,?,?,?,?,?,?,?)",
+      "INSERT INTO comments (question_text, feedback_text, created_at) VALUES (?,?,NOW())",
       [
-        req.body.name,
-        req.body.lastName,
-        req.body.email,
-        req.body.cpf,
-        req.body.color,
-        req.body.genre,
-        req.body.birthDay,
-        req.body.maritalStatus,
-        req.body.phone,
-        req.body.phone2,
+        req.body.question_text,
+        req.body.feedback_text,
+        req.body.created_at,
       ],
       (error, resultado, field) => {
         conn.release();
         if (error) {
           return res.status(500).send({
             error: error,
-            listaDeUsuarios: null,
+            message: null,
           });
         }
         res.status(201).send({

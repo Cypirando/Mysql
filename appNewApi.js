@@ -2,7 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const bodyParser = require("body-parser");
-const rotaSorteio = require("./routes/NewApi");
+const routComments = require("./routes/comments");
+const routAnswer = require("./routes/answer");
 var cors = require("cors");
 app.use(cors());
 app.use(morgan("dev"));
@@ -23,7 +24,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/sorteio", rotaSorteio);
+app.use("/quiz", routComments);
+app.use("/assessment", routAnswer);
+
 //Quando não encontra a rota
 app.use((req, res, next) => {
   const erro = new Error("Não encontrado!");

@@ -1,1 +1,1 @@
-SELECT * from Botdesigner;
+SELECT * from answer;
