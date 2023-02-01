@@ -24,14 +24,14 @@ router.post("/", (req, res, next) => {
     }
     conn.query(
     //   "INSERT INTO answer (id_comments, feedback_test, created_at, received, rating) VALUES (?,?,NOW())"
-      `INSERT INTO answer (feedback_end, created_at, received, rating) VALUES (?,NOW(),?,?)
+      `INSERT INTO answer (id_comments,feedback_end, created_at, received, rating) VALUES (1,?,NOW(),?,?)
       `
     //   SELECT c.id, ?, NOW(), ?, ?
     //   FROM comments c
     //   WHERE c.id = ?;
       ,
       [
-        req.body.feedback_text,
+        req.body.feedback_end,
         req.body.created_at,
         req.body.received,
         req.body.rating,
