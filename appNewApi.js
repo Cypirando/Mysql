@@ -4,6 +4,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const routComments = require("./routes/comments");
 const routAnswer = require("./routes/answer");
+// const routToken = require("./routes/sendToken");
+
 var cors = require("cors");
 app.use(cors());
 app.use(morgan("dev"));
@@ -26,6 +28,8 @@ app.use((req, res, next) => {
 
 app.use("/quiz", routComments);
 app.use("/assessment", routAnswer);
+// app.use("/quiz/:id", routToken);
+
 
 //Quando não encontra a rota
 app.use((req, res, next) => {
