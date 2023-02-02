@@ -83,3 +83,33 @@ router.post("/", (req, res, next) => {
 });
 
 module.exports = router;
+
+
+
+
+// const id_comments = await conn.query(
+//   `SELECT id FROM comments WHERE feedback_text = ?`,
+//   [req.body.feedback_text]
+// );
+
+// conn.query(
+//   `INSERT INTO answer (id_comments, feedback_end, created_at, received, rating) VALUES (?, ?, NOW(), ?, ?)`,
+//   [id_comments[0].id, req.body.feedback_end, req.body.received, req.body.rating],
+//   (error, results) => {
+//     if (error) throw error;
+//     console.log(results);
+//   }
+// );
+
+
+// SELECT id FROM comments WHERE question_text = 'Excelente produto' AND feedback_text = 'obrigado' AND created_at = '2023-01-31T23:34:59.000Z';
+
+
+// INSERT INTO answer (id_comments, feedback_end, created_at, received, rating) VALUES ((resultado da query acima), ?, NOW(), ?, ?);
+
+// SELECT * FROM comments WHERE id_comments = ?
+
+// SELECT * FROM comments WHERE feedback_text = ? AND created_at >= ?
+
+
+

@@ -11,7 +11,7 @@ router.get("/", (req, res, next) => {
       if (error) {
         return res.status(500).send({ error: error });
       }
-     
+
       return res.status(200).send({ message: resultado });
     });
   });
@@ -23,20 +23,9 @@ router.post("/", (req, res, next) => {
       return res.status(500).send({ error: error });
     }
     conn.query(
-    //   "INSERT INTO answer (id_comments, feedback_test, created_at, received, rating) VALUES (?,?,NOW())"
-      `INSERT INTO answer (id_comments,feedback_end, created_at, received, rating) VALUES (1,?,NOW(),?,?)
-      `
-    //   SELECT c.id, ?, NOW(), ?, ?
-    //   FROM comments c
-    //   WHERE c.id = ?;
-      ,
-      [
-        req.body.feedback_end,
-        req.body.created_at,
-        req.body.received,
-        req.body.rating,
-      ],
-      (error, resultado, field) => {
+      `INSERT INTO answer (id_comments, feedback_end, created_at, received, rating) VALUES (1, ?, NOW(), ?, ?)`,
+      [req.body.feedback_end, req.body.received, req.body.rating],
+      (error, resultado, field) => {  
         conn.release();
         if (error) {
           return res.status(500).send({
@@ -53,9 +42,7 @@ router.post("/", (req, res, next) => {
   });
 });
 
-
 module.exports = router;
-
 
 // const express = require("express");
 // const router = express.Router();
@@ -97,7 +84,6 @@ module.exports = router;
 
 // module.exports = router;
 
-
 // const express = require("express");
 // const router = express.Router();
 // const mysql = require("../mysqlNewApi").pool;
@@ -132,7 +118,7 @@ module.exports = router;
 //     conn.query(
 //       `
 //       INSERT INTO answer (id_comments, feedback_end, created_at, received, rating) VALUES (?, ?, NOW(), ?, ?)
-      
+
 //       `,
 
 //       [
