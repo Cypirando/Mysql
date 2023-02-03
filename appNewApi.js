@@ -1,11 +1,10 @@
+
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const bodyParser = require("body-parser");
 const routComments = require("./routes/comments");
 const routAnswer = require("./routes/answer");
-// const routToken = require("./routes/sendToken");
-
 var cors = require("cors");
 app.use(cors());
 app.use(morgan("dev"));
@@ -14,22 +13,14 @@ app.use(bodyParser.json()); // json de entrada no body
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Header",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
+  res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+  res.header("Access-Control-Allow-Headers", "*");
 
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).send({});
-  }
   next();
 });
 
 app.use("/quiz", routComments);
 app.use("/assessment", routAnswer);
-// app.use("/quiz/:id", routToken);
-
 
 //Quando não encontra a rota
 app.use((req, res, next) => {

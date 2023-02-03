@@ -1,10 +1,17 @@
+
 const express = require("express");
 const router = express.Router();
 const mysql = require("../mysqlNewApi").pool;
-const cors = require("cors");
 const app = express();
-
+var cors = require("cors");
 app.use(cors());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+  res.header("Access-Control-Allow-Headers", "*");
+
+  next();
+});
 //Visualiza nomes
 router.get("/", (req, res, next) => {
   mysql.getConnection((error, conn) => {
