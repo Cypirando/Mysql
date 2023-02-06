@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const mysql = require("../mysqlNewApi").pool;
@@ -34,8 +33,8 @@ router.post("/", (req, res, next) => {
       return res.status(500).send({ error: error });
     }
     conn.query(
-      `INSERT INTO answer (id_comments, feedback_end, created_at, received, rating) VALUES (1, ?, NOW(), ?, ?)`,
-      [req.body.feedback_end, req.body.received, req.body.rating],
+      `INSERT INTO answer (id_comments, feedback_end, created_at, rating) VALUES (23, ?, NOW(), ?)`,
+      [req.body.feedback_end, req.body.rating],
       (error, resultado, field) => {
         conn.release();
         if (error) {
