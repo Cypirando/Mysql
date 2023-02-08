@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/quiz", routComments);
-app.use("/rating", routAnswer);
+app.use("/assessment", routAnswer);
 
 //Quando não encontra a rota
 app.use((req, res, next) => {
