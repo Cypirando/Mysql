@@ -55,10 +55,10 @@ router.get("/", (req, res, next) => {
 });
 // Posta nomes
 router.post("/", (req, res, next) => {
-  let interval = setInterval(() => {
+ 
     mysql.getConnection((error, conn) => {
       if (error) {
-        clearInterval(interval);
+    
         return res.status(500).send({ error: error });
       }
       conn.query(
@@ -67,13 +67,13 @@ router.post("/", (req, res, next) => {
         (error, resultado, field) => {
           conn.release();
           if (error) {
-            clearInterval(interval);
+         
             return res.status(500).send({
               error: error,
               message: null,
             });
           }
-          clearInterval(interval);
+      
           res.status(201).send({
             mensagem: "O participante foi inserido com sucesso.",
             id: resultado.insertId,
@@ -81,7 +81,7 @@ router.post("/", (req, res, next) => {
         }
       );
     });
-  }, 1000);
+
 });
 
 router.get("/polling", (req, res) => {
