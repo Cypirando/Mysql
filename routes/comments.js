@@ -15,6 +15,7 @@ app.use((req, res, next) => {
 router.get("/:id", (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
+      conn.release();
       return res.status(500).send({ error: error });
     }
     conn.query(
@@ -22,9 +23,10 @@ router.get("/:id", (req, res, next) => {
       [req.params.id],
       (error, resultado, field) => {
         if (error) {
+          conn.release();
           return res.status(500).send({ error: error });
         }
-
+        conn.release();
         return res.status(200).send({ message: resultado });
       }
     );
@@ -35,7 +37,6 @@ router.get("/", (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
       conn.release();
-
       return res.status(500).send({ error: error });
     }
     conn.query("SELECT * FROM comments;", (error, resultado, field) => {
@@ -52,7 +53,7 @@ router.get("/", (req, res, next) => {
 router.post("/", (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
-      conn.release()
+      conn.release();
       return res.status(500).send({ error: error });
     }
     conn.query(
@@ -61,15 +62,14 @@ router.post("/", (req, res, next) => {
       (error, resultado, field) => {
         conn.release();
         if (error) {
-          conn.release()
+          conn.release();
           return res.status(500).send({
             error: error,
             message: null,
           });
         }
-
         res.status(201).send({
-          mensagem: "O participante foi inserido com sucesso.",
+          mensagem: "A mnesagen foi inserida com sucesso.",
           id: resultado.insertId,
         });
       }
@@ -77,4 +77,59 @@ router.post("/", (req, res, next) => {
   });
 });
 
+// Altera nomes
+router.patch("/", (req, res, next) => {
+  mysql.getConnection((error, conn) => {
+    if (error) {
+      return res.status(500).send({ error: error });
+    }
+    conn.query(
+      `UPDATE comments 
+        SET question_text = ?,
+            feedback_text = ?
+        WHERE          id = ?`,
+      [req.body.question_text, req.body.feedback_text, req.body.id],
+      (error, resultado, field) => {
+        conn.release();
+        if (error) {
+          return res.status(500).send({
+            error: error,
+            message: null,
+          });
+        }
+        res.status(202).send({
+          message: "A mensagem foi alterada com sucesso.",
+          id: resultado.insertId,
+        });
+      }
+    );
+  });
+});
+
+// Deleta nomes
+router.delete("/", (req, res, next) => {
+  mysql.getConnection((error, conn) => {
+    if (error) {
+      conn.release();
+      return res.status(500).send({ error: error });
+    }
+    conn.query(
+      "DELETE FROM comments WHERE id = ?",
+      [req.body.id],
+      (error, resultado, field) => {
+        conn.release();
+        if (error) {
+          return res.status(500).send({
+            error: error,
+            message: null,
+          });
+        }
+        res.status(202).send({
+          mensagem: "A mensagens foi deletada com sucesso.",
+          id: resultado.insertId,
+        });
+      }
+    );
+  });
+});
 module.exports = router;

@@ -15,13 +15,15 @@ app.use((req, res, next) => {
 router.get("/", (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
+      conn.release();
       return res.status(500).send({ error: error });
     }
     conn.query("SELECT * FROM answer;", (error, resultado, field) => {
       if (error) {
+        conn.release();
         return res.status(500).send({ error: error });
       }
-
+      conn.release();
       return res.status(200).send({ message: resultado });
     });
   });
@@ -30,6 +32,7 @@ router.get("/", (req, res, next) => {
 router.post("/", (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
+      conn.release();
       return res.status(500).send({ error: error });
     }
     conn.query(
@@ -38,11 +41,13 @@ router.post("/", (req, res, next) => {
       (error, resultado, field) => {
         conn.release();
         if (error) {
+          conn.release();
           return res.status(500).send({
             error: error,
             message: null,
           });
         }
+        conn.release();
         res.status(201).send({
           mensagem: "O participante foi inserido com sucesso.",
           id: resultado.insertId,
@@ -51,5 +56,6 @@ router.post("/", (req, res, next) => {
     );
   });
 });
+
 
 module.exports = router;
