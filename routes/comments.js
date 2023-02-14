@@ -107,7 +107,7 @@ router.patch("/", (req, res, next) => {
 });
 
 // Deleta nomes
-router.delete("/", (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
       conn.release();
@@ -115,7 +115,7 @@ router.delete("/", (req, res, next) => {
     }
     conn.query(
       "DELETE FROM comments WHERE id = ?",
-      [req.body.id],
+      [req.params.id],
       (error, resultado, field) => {
         conn.release();
         if (error) {

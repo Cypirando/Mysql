@@ -47,7 +47,6 @@ router.post("/", (req, res, next) => {
             message: null,
           });
         }
-        conn.release();
         res.status(201).send({
           mensagem: "O participante foi inserido com sucesso.",
           id: resultado.insertId,
