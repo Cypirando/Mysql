@@ -11,6 +11,27 @@ app.use((req, res, next) => {
 
   next();
 });
+router.get("/:id", (req, res, next) => {
+  mysql.getConnection((error, conn) => {
+    if (error) {
+      conn.release();
+      return res.status(500).send({ error: error });
+    }
+    conn.query(
+      "SELECT * FROM comments WHERE id=?;",
+      [req.params.id],
+      (error, resultado, field) => {
+        if (error) {
+          conn.release();
+          return res.status(500).send({ error: error });
+        }
+        conn.release();
+        return res.status(200).send({ message: resultado });
+      }
+    );
+  });
+});
+
 //Visualiza nomes
 router.get("/", (req, res, next) => {
   mysql.getConnection((error, conn) => {
@@ -56,5 +77,31 @@ router.post("/", (req, res, next) => {
   });
 });
 
+// Deleta nomes
+router.delete("/:id", (req, res, next) => {
+  mysql.getConnection((error, conn) => {
+    if (error) {
+      conn.release();
+      return res.status(500).send({ error: error });
+    }
+    conn.query(
+      "DELETE FROM comments WHERE id = ?",
+      [req.params.id],
+      (error, resultado, field) => {
+        conn.release();
+        if (error) {
+          return res.status(500).send({
+            error: error,
+            message: null,
+          });
+        }
+        res.status(202).send({
+          mensagem: "A mensagens foi deletada com sucesso.",
+          id: resultado.insertId,
+        });
+      }
+    );
+  });
+});
 
 module.exports = router;
